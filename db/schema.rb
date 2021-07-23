@@ -24,17 +24,20 @@ ActiveRecord::Schema.define(version: 2017_07_18_165723) do
   end
 
   create_table "order_items", force: :cascade do |t|
-    t.integer "order_id"
-    t.integer "item_id"
+    t.bigint "order_id", null: false
+    t.bigint "item_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_order_items_on_item_id"
+    t.index ["order_id"], name: "index_order_items_on_order_id"
   end
 
   create_table "orders", force: :cascade do |t|
     t.decimal "amount"
-    t.integer "user_id"
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -44,4 +47,7 @@ ActiveRecord::Schema.define(version: 2017_07_18_165723) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "order_items", "items"
+  add_foreign_key "order_items", "orders"
+  add_foreign_key "orders", "users"
 end
